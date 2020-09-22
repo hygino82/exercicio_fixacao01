@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import entities.Account;
+import model.exception.DomainException;
 
 public class Program {
 
@@ -21,20 +22,18 @@ public class Program {
 		double balance = sc.nextDouble();
 		System.out.print("Withdraw limit: ");
 		double withdrawLimit = sc.nextDouble();
-		System.out.print("\nEnter amount for withdraw: ");
-		double amount = sc.nextDouble();
+		
 		Account acc = new Account(number, holder, balance, withdrawLimit);
 		
+		System.out.print("\nEnter amount for withdraw: ");
+		double amount = sc.nextDouble();
 		
-		if (amount > withdrawLimit) {
-			System.out.println("Withdraw error: The amount exceeds withdraw limit");
-		}
-		else if (amount > balance) {
-			System.out.println("Withdraw error: Not enough balance");
-		}
-		else {
+		try {
 			acc.withdraw(amount);
-			System.out.printf("New Balance: %.2f\n", acc.getBalance());
+			System.out.println("New balance: " + String.format("%.2f", acc.getBalance()));
+		}
+		catch (DomainException e) {
+			System.out.println("Withdraw error: " + e.getMessage());
 		}
 		
 		
